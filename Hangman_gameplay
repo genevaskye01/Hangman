@@ -14,6 +14,7 @@ with open('sowpods.txt', 'r') as f:
 
 
 while playing:
+    guessed.clear()
     word = wordsList[random.randint(0, len(wordsList) - 1)]
     incorrect = True
     response = ""
