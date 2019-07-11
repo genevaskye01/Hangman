@@ -1,0 +1,65 @@
+import random
+wordsList = []
+guessed = []
+playing = True
+
+
+with open('sowpods.txt', 'r') as f:
+    line = f.readline().strip()
+    while line:
+        wordsList.append(line)
+        line = f.readline().strip()
+
+
+while playing:
+    word = wordsList[random.randint(0, len(wordsList) - 1)]
+    incorrect = True
+    response = ""
+    key = ""
+    triesLeft = 5
+
+    for i in word:
+        response = response + "__  "
+
+    for i in word:
+        key = key + i + "   "
+    checker = key
+
+    print(response)
+
+    while incorrect and triesLeft != 0:
+        if response == key:
+            incorrect = False
+        else:
+            print("You've guessed:: " + str(guessed))
+            guess = input("Guess a letter:: ")
+            guess = guess.upper()
+            guessed.append(guess)
+            guessed.sort()
+
+            if guess in response:
+                print("You've already guessed that...")
+                guessed.remove(guess)
+            elif guess not in checker:
+                triesLeft -= 1
+                print("Incorrect! You have " + str(triesLeft) + " tries left.")
+            else:
+                times = checker.count(guess)
+                for i in range(times):
+                    index = checker.find(guess)
+                    response = response[:index] + guess + " " + response[index+2:]
+                    checker = checker.replace(guess, " ", 1)
+                print(response)
+                print()
+
+    if incorrect:
+        print("You lose!")
+    else:
+        print("You win!")
+    print("The word was:: " + word)
+
+    answer = input("Would you like to play again? [Y/N]")
+    if answer.lower() == "y":
+        playing = True
+    else:
+        playing = False
